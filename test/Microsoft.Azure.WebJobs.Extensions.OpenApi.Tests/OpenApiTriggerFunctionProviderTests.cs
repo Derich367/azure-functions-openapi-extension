@@ -54,15 +54,20 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
         }
 
         [DataTestMethod]
-        [DataRow(AuthorizationLevel.Anonymous, AuthorizationLevel.Anonymous)]
-        [DataRow(AuthorizationLevel.Anonymous, AuthorizationLevel.Function)]
-        [DataRow(AuthorizationLevel.Function, AuthorizationLevel.Anonymous)]
-        [DataRow(AuthorizationLevel.Function, AuthorizationLevel.Function)]
-        public async Task Given_AuthLevel_When_GetFunctionMetadataAsync_Invoked_Then_It_Should_Return_Result(AuthorizationLevel authLevelDoc, AuthorizationLevel authLevelUI)
+        [DataRow(AuthorizationLevel.Anonymous, AuthorizationLevel.Anonymous, AuthorizationLevel.Anonymous)]
+        [DataRow(AuthorizationLevel.Anonymous, AuthorizationLevel.Function, AuthorizationLevel.Anonymous)]
+        [DataRow(AuthorizationLevel.Function, AuthorizationLevel.Anonymous, AuthorizationLevel.Anonymous)]
+        [DataRow(AuthorizationLevel.Function, AuthorizationLevel.Function, AuthorizationLevel.Anonymous)]
+        [DataRow(AuthorizationLevel.Anonymous, AuthorizationLevel.Anonymous, AuthorizationLevel.Function)]
+        [DataRow(AuthorizationLevel.Anonymous, AuthorizationLevel.Function, AuthorizationLevel.Function)]
+        [DataRow(AuthorizationLevel.Function, AuthorizationLevel.Anonymous, AuthorizationLevel.Function)]
+        [DataRow(AuthorizationLevel.Function, AuthorizationLevel.Function, AuthorizationLevel.Function)]
+        public async Task Given_AuthLevel_When_GetFunctionMetadataAsync_Invoked_Then_It_Should_Return_Result(AuthorizationLevel authLevelDoc, AuthorizationLevel authLevelUI,AuthorizationLevel authLevelOAuthRedirect)
         {
             var authLevelSettings = new Mock<OpenApiAuthLevelSettings>();
             authLevelSettings.SetupGet(p => p.Document).Returns(authLevelDoc);
             authLevelSettings.SetupGet(p => p.UI).Returns(authLevelUI);
+            authLevelSettings.SetupGet(p => p.OAuthRedirect).Returns(authLevelOAuthRedirect);
 
             var settings = new Mock<OpenApiSettings>();
             settings.SetupGet(p => p.HideSwaggerUI).Returns(false);
@@ -76,7 +81,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests
             result.Single(p => p.Name == "RenderSwaggerDocument").Bindings.First().Raw.Value<int>("authLevel").Should().Be((int)authLevelDoc);
             result.Single(p => p.Name == "RenderOpenApiDocument").Bindings.First().Raw.Value<int>("authLevel").Should().Be((int)authLevelDoc);
             result.Single(p => p.Name == "RenderSwaggerUI").Bindings.First().Raw.Value<int>("authLevel").Should().Be((int)authLevelUI);
-            result.Single(p => p.Name == "RenderOAuth2Redirect").Bindings.First().Raw.Value<int>("authLevel").Should().Be((int)authLevelUI);
+            result.Single(p => p.Name == "RenderOAuth2Redirect").Bindings.First().Raw.Value<int>("authLevel").Should().Be((int)authLevelOAuthRedirect);
         }
     }
 }

@@ -30,6 +30,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             Environment.SetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT", null);
             Environment.SetEnvironmentVariable("OpenApi__AuthLevel__Document", null);
             Environment.SetEnvironmentVariable("OpenApi__AuthLevel__UI", null);
+            Environment.SetEnvironmentVariable("OpenApi__AuthLevel__OAuthRedirect",null);
             Environment.SetEnvironmentVariable("OpenApi__ApiKey", null);
         }
 
@@ -380,6 +381,34 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Tests
             var context = new OpenApiHttpTriggerContext();
 
             var result = context.GetUIAuthLevel();
+
+            result.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void Given_NoAuthLevel_When_GetOAuthRedirectAuthLevel_Invoked_Then_It_Should_Return_Anonymous()
+        {
+            var context = new OpenApiHttpTriggerContext();
+
+            var result = context.GetUIAuthLevel();
+
+            result.Should().Be(OpenApiAuthLevelType.Anonymous);
+        }
+
+        [DataTestMethod]
+        [DataRow("Anonymous", OpenApiAuthLevelType.Anonymous)]
+        [DataRow("User", OpenApiAuthLevelType.User)]
+        [DataRow("Function", OpenApiAuthLevelType.Function)]
+        [DataRow("System", OpenApiAuthLevelType.System)]
+        [DataRow("Admin", OpenApiAuthLevelType.Admin)]
+        [DataRow("ServiceAccount", OpenApiAuthLevelType.Anonymous)]
+        public void Given_AuthLevel_When_GetOAuthRedirectAuthLevel_Invoked_Then_It_Should_Return_Result(string authLevel, OpenApiAuthLevelType expected)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__AuthLevel__OAuthRedirect", authLevel);
+
+            var context = new OpenApiHttpTriggerContext();
+
+            var result = context.GetOAuthRedirectAuthLevel();
 
             result.Should().Be(expected);
         }

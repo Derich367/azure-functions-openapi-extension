@@ -148,6 +148,13 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions
         OpenApiAuthLevelType GetUIAuthLevel(string key = "OpenApi__AuthLevel__UI");
 
         /// <summary>
+        /// Gets the auth level of the OAuth redirect endpoint.
+        /// </summary>
+        /// <param name="key">Environment variables key to look for.</param>
+        /// <returns>Returns the auth level of the OAuth redirect endpoint.</returns>
+        OpenApiAuthLevelType GetOAuthRedirectAuthLevel(string key = "OpenApi__AuthLevel__OAuthRedirect");
+
+        /// <summary>
         /// Gets the API key for endpoints from environment variables.
         /// </summary>
         /// <param name="key">Environment variables key to look for.</param>

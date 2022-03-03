@@ -225,7 +225,7 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Functions
                                    .SwaggerUI
                                    .AddServer(request, this._context.HttpSettings.RoutePrefix, this._context.OpenApiConfigurationOptions)
                                    .BuildOAuth2RedirectAsync(this._context.PackageAssembly)
-                                   .RenderOAuth2RedirectAsync("oauth2-redirect.html", this._context.GetDocumentAuthLevel(), this._context.GetSwaggerAuthKey())
+                                   .RenderOAuth2RedirectAsync("oauth2-redirect.html", this._context.GetOAuthRedirectAuthLevel(), this._context.GetSwaggerAuthKey())
                                    .ConfigureAwait(false);
 
                 response = req.CreateResponse(HttpStatusCode.OK);

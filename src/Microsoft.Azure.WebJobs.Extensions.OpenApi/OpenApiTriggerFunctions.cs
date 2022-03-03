@@ -268,7 +268,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 result = await openApiContext.SwaggerUI
                                       .AddServer(request, openApiContext.HttpSettings.RoutePrefix, openApiContext.OpenApiConfigurationOptions)
                                       .BuildOAuth2RedirectAsync(openApiContext.PackageAssembly)
-                                      .RenderOAuth2RedirectAsync("oauth2-redirect.html", openApiContext.GetDocumentAuthLevel(), openApiContext.GetSwaggerAuthKey())
+                                      .RenderOAuth2RedirectAsync("oauth2-redirect.html", openApiContext.GetOAuthRedirectAuthLevel(), openApiContext.GetSwaggerAuthKey())
                                       .ConfigureAwait(false);
 
                 content = new ContentResult()

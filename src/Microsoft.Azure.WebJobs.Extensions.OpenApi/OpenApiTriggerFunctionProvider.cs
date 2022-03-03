@@ -80,7 +80,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi
                 {
                     Methods = new List<string>() { HttpMethods.Get },
                     Route = "oauth2-redirect.html",
-                    AuthLevel = this._settings.AuthLevel?.UI ?? AuthorizationLevel.Anonymous,
+                    AuthLevel = this._settings.AuthLevel?.OAuthRedirect ?? AuthorizationLevel.Anonymous,
                 };
 
                 bindings.Add(RenderOAuth2RedirectKey, renderOAuth2Redirect);

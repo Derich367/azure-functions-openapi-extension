@@ -16,5 +16,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Configurations
         /// Gets or sets the <see cref="AuthorizationLevel"/> value for Swagger UI page rendering endpoints.
         /// </summary>
         public virtual AuthorizationLevel? UI { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="AuthorizationLevel"/> value for Swagger OAuth redirect endpoint.
+        /// </summary>
+        public virtual AuthorizationLevel? OAuthRedirect { get; set; }
     }
 }

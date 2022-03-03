@@ -242,6 +242,14 @@ namespace Microsoft.Azure.Functions.Worker.Extensions.OpenApi
             return parsed;
         }
 
+        public virtual OpenApiAuthLevelType GetOAuthRedirectAuthLevel(string key = "OpenApi__AuthLevel__OAuthRedirect")
+        {
+            var value = Environment.GetEnvironmentVariable(key);
+            var parsed = Enum.TryParse<OpenApiAuthLevelType>(value, out var result) ? result : OpenApiAuthLevelType.Anonymous;
+
+            return parsed;
+        }
+
         /// <inheritdoc />
         public virtual string GetSwaggerAuthKey(string key = "OpenApi__ApiKey")
         {

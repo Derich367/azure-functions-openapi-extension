@@ -30,6 +30,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.Configurations
             Environment.SetEnvironmentVariable("OpenApi__ApiKey", null);
             Environment.SetEnvironmentVariable("OpenApi__AuthLevel__Document", null);
             Environment.SetEnvironmentVariable("OpenApi__AuthLevel__UI", null);
+            Environment.SetEnvironmentVariable("OpenApi__AuthLevel__OAuthRedirect",null);
             Environment.SetEnvironmentVariable("OpenApi__BackendProxyUrl", null);
         }
 
@@ -223,6 +224,29 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Tests.Configurations
             var settings = config.Get<OpenApiSettings>("OpenApi");
 
             settings.AuthLevel.UI.Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(null, null)]
+        [DataRow("", null)]
+        [DataRow("Anonymous", AuthorizationLevel.Anonymous)]
+        [DataRow("anonymous", AuthorizationLevel.Anonymous)]
+        [DataRow("Function", AuthorizationLevel.Function)]
+        [DataRow("function", AuthorizationLevel.Function)]
+        [DataRow("User", AuthorizationLevel.User)]
+        [DataRow("user", AuthorizationLevel.User)]
+        [DataRow("Admin", AuthorizationLevel.Admin)]
+        [DataRow("admin", AuthorizationLevel.Admin)]
+        [DataRow("System", AuthorizationLevel.System)]
+        [DataRow("system", AuthorizationLevel.System)]
+        public void Given_AuthLevelOAuthRedirect_When_Instantiated_Then_It_Should_Return_Result(string authLevel, AuthorizationLevel? expected)
+        {
+            Environment.SetEnvironmentVariable("OpenApi__AuthLevel__OAuthRedirect", authLevel);
+
+            var config = ConfigurationResolver.Resolve();
+            var settings = config.Get<OpenApiSettings>("OpenApi");
+
+            settings.AuthLevel.OAuthRedirect.Should().Be(expected);
         }
 
         [DataTestMethod]
