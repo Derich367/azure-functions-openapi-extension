@@ -117,6 +117,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Visitors
             var properties = type.Value
                                  .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                                  .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>())
+                                 .GroupBy(p => p.GetJsonPropertyName(namingStrategy))
+                                 .Select(p => p.First())
                                  .ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
 
             this.ProcessProperties(instance, name, properties, namingStrategy);
